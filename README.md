@@ -21,6 +21,7 @@ O objetivo é sugerir filmes semelhantes a um título escolhido pelo usuário, c
     movies_metadata.csv      # Dataset de metadados de filmes
     ratings.csv              # Dataset de avaliações de usuários
     Sistema_Recomendacao.py  # Código principal
+    Recomendacao_Filmes      # Jupyter Notebook
     README.md                # Documentação do projeto
 
 📊 Conjunto de Dados
@@ -74,6 +75,7 @@ O objetivo é sugerir filmes semelhantes a um título escolhido pelo usuário, c
 🖥️ Exemplo de Uso
 
     Buscar filmes semelhantes a "300"
+    
     distances, suggestions = model.kneighbors(
         filmes_pivot.filter(items=['300'], axis=0).values.reshape(1, -1)
     )
