@@ -1,6 +1,8 @@
 #Importando as bibliotecas
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 #importando o dataset de filmes
 filmes = pd.read_csv('movies_metadata.csv', low_memory=False)
@@ -121,6 +123,25 @@ for i in range(len(sugestions)):
 distances, sugestions = model.kneighbors(filmes_pivot.filter(items = ['Alien'], axis = 0).values.reshape(1, -1))
 for i in range(len(sugestions)):
     print(filmes_pivot.index[sugestions[i]],'\n')
+indices_recomendados = sugestions[0][1:]
+distancias_recomendadas = distances[0][1:]
+filmes_recomendados = filmes_pivot.index[indices_recomendados]
+epsilon = 0.05
+dist_norm = (distancias_recomendadas - distancias_recomendadas.min()) / (distancias_recomendadas.max() - distancias_recomendadas.min())
+dist_norm = dist_norm * (1 - 2*epsilon) + epsilon
+similaridades = 1 - dist_norm
+
+#Cores
+cores = sns.color_palette("OrRd", len(filmes_recomendados))
+
+# Plot
+plt.figure(figsize=(8, 5))
+plt.barh(filmes_recomendados[::-1], similaridades[::-1], color=cores[::-1])
+plt.xlabel("Similaridade")
+plt.title("Top Recomendações para 'Alien'")
+plt.tight_layout()
+plt.savefig("top_recomendacoes_alien.png", dpi=300)
+plt.show()
 
 #Casper
 distances, sugestions = model.kneighbors(filmes_pivot.filter(items = ['Casper'], axis = 0).values.reshape(1, -1))
