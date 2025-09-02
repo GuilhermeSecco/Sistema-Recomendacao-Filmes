@@ -3,13 +3,14 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import joblib
 
 #importando o dataset de filmes
 filmes = pd.read_csv('movies_metadata.csv', low_memory=False)
 print(filmes.head(3))
 print(filmes.columns)
 
-#Separando e renomeando as colunas
+#Separando as colunas
 filmes = filmes[['id','original_title','original_language','vote_count']]
 print(filmes.head(3))
 
@@ -82,6 +83,7 @@ print(avaliacoes_e_filmes.isnull().sum())
 print(avaliacoes_e_filmes.columns)
 
 #Retirando campos com duplicidade
+avaliacoes_e_filmes.drop_duplicates(['userId', 'original_title'], inplace=True)
 avaliacoes_e_filmes.drop_duplicates(['userId', 'movieId'],inplace=True)
 print(avaliacoes_e_filmes.shape)
 
@@ -95,6 +97,9 @@ print(filmes_pivot.head(20))
 #Preenchendo os valores nulos com zero
 filmes_pivot.fillna(0, inplace=True)
 print(filmes_pivot.head(20))
+
+def nome_filmes():
+    return avaliacoes_e_filmes['original_title']
 
 #Importando csr_matrix do SciPy
 from scipy.sparse import csr_matrix
@@ -147,3 +152,13 @@ plt.show()
 distances, sugestions = model.kneighbors(filmes_pivot.filter(items = ['Casper'], axis = 0).values.reshape(1, -1))
 for i in range(len(sugestions)):
     print(filmes_pivot.index[sugestions[i]],'\n')
+
+def escolha_filme(filme):
+    distances, sugestions = model.kneighbors(filmes_pivot.filter(items=[filme], axis=0).values.reshape(1, -1))
+    recomendation = []
+    for i in range(len(sugestions)):
+        for idx in sugestions[i]:
+            filmes = filmes_pivot.index[idx]
+            if filmes not in filme:
+                recomendation.append(filmes_pivot.index[idx])
+    return list(recomendation)
