@@ -36,8 +36,8 @@ print(avaliacao.isnull().sum())
 #Verificando a média de avaliações por usuário
 print(avaliacao['userId'].value_counts().mean())
 
-#Separando Usuários com pelo menos 1000 avaliações
-qt_avaliacoes = avaliacao['userId'].value_counts() > 999
+#Separando Usuários com pelo menos 100 avaliações
+qt_avaliacoes = avaliacao['userId'].value_counts() > 99
 y = qt_avaliacoes[qt_avaliacoes].index
 
 #Visualizando a quantidade de indices
