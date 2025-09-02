@@ -4,6 +4,8 @@ Este projeto implementa um sistema de recomendação de filmes utilizando o algo
 
 O objetivo é sugerir filmes semelhantes a um título escolhido pelo usuário, com base nas avaliações de outros usuários.
 
+Site interativo: https://recomendacao-filmes.streamlit.app/
+
 📌 Funcionalidades
 
     Filtragem de filmes com base no número mínimo de votos.
